@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dark-Scanner</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 320px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      background: #0f0f0f;
+      color: #e8e8e8;
+      padding: 16px;
+    }
+    h1 { font-size: 16px; color: #ff4d4d; margin-bottom: 4px; }
+    .subtitle { font-size: 11px; color: #777; margin-bottom: 16px; }
+    label { display: block; font-size: 12px; color: #aaa; margin-bottom: 6px; }
+    input[type="password"] {
+      width: 100%;
+      padding: 8px 10px;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 6px;
+      color: #e8e8e8;
+      font-size: 13px;
+      outline: none;
+    }
+    input[type="password"]:focus { border-color: #ff4d4d; }
+    button {
+      margin-top: 10px;
+      width: 100%;
+      padding: 9px;
+      background: #ff4d4d;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #e03c3c; }
+    #status {
+      margin-top: 10px;
+      font-size: 12px;
+      min-height: 18px;
+      text-align: center;
+    }
+    .ok { color: #4caf50; }
+    .err { color: #ff4d4d; }
+    hr { border: none; border-top: 1px solid #222; margin: 14px 0; }
+    .stats { font-size: 12px; color: #888; }
+    .stats span { color: #ff4d4d; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1>Dark-Scanner</h1>
+  <p class="subtitle">온라인 쇼핑몰 다크패턴 탐지 확장 프로그램</p>
+
+  <label for="apiKey">Claude API 키</label>
+  <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" />
+  <button id="saveBtn">저장</button>
+  <div id="status"></div>
+
+  <hr />
+  <div class="stats" id="stats">탐지된 패턴: <span id="count">0</span>개</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

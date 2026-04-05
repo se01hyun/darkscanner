@@ -9,7 +9,10 @@
     "sourceType": "script"
   },
   "globals": {
-    "detectSocialProof": "readonly"
+    "detectSocialProof": "readonly",
+    "detectEmotionalLanguage": "readonly",
+    "classifyEmotionalLanguage": "readonly",
+    "importScripts": "readonly"
   },
   "rules": {
     "no-unused-vars": "warn",

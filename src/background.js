@@ -2,15 +2,26 @@
 // Chrome Extension Service Worker (Manifest V3)
 // content.js에서 Claude API 호출 요청을 받아 처리합니다. (CORS 우회)
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === "ANALYZE_TEXT") {
-    // TODO: src/api/claude.js 완성 후 실제 API 호출로 교체
-    console.log("[Dark-Scanner] 분석 요청 수신:", message.payload);
-    sendResponse({ status: "ok", result: null });
-  }
+'use strict';
 
-  // 비동기 응답을 위해 true 반환
-  return true;
+importScripts('api/claude.js');
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'ANALYZE_EMOTIONAL') {
+    chrome.storage.local.get('claudeApiKey', async ({ claudeApiKey }) => {
+      if (!claudeApiKey) {
+        sendResponse({ error: 'API 키가 설정되지 않았습니다. 확장 프로그램 팝업에서 키를 입력해주세요.' });
+        return;
+      }
+      try {
+        const results = await classifyEmotionalLanguage(message.payload.texts, claudeApiKey);
+        sendResponse({ results });
+      } catch (e) {
+        sendResponse({ error: e.message });
+      }
+    });
+    return true; // 비동기 응답
+  }
 });
 
-console.log("[Dark-Scanner] Background service worker 시작");
+console.log('[Dark-Scanner] Background service worker 시작');
