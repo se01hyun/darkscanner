@@ -56,9 +56,9 @@ dark-scanner/
 **목표**: 크롬에 확장 프로그램으로 로드되는 최소 구조 완성
 
 - [x] `manifest.json` 작성 (MV3)
-- [ ] 폴더 구조 생성
-- [ ] `src/content.js` 진입점 — DOM Ready 후 탐지기 실행
-- [ ] `src/background.js` 기본 틀 — 메시지 리스너 등록
+- [x] 폴더 구조 생성
+- [x] `src/content.js` 진입점 — DOM Ready 후 탐지기 실행
+- [x] `src/background.js` 기본 틀 — 메시지 리스너 등록
 
 ---
 
@@ -68,6 +68,7 @@ dark-scanner/
 
 ### P1-A. 다른 소비자의 활동 알림 (93.4%)
 
+- [x] `src/detectors/social-proof.js` 구현
 - 탐지 방식: 정규식 텍스트 매칭
 - 타겟 패턴 예시
   - `"N명이 보는 중"`, `"지금까지 OOO개 구매"`
@@ -77,6 +78,8 @@ dark-scanner/
 
 ### P1-B. 감정적 언어사용 (86.8%)
 
+- [ ] `src/detectors/emotional-language.js` 구현
+- [ ] `src/api/claude.js` Claude API 클라이언트 구현
 - 탐지 방식: 버튼·링크 텍스트 추출 → Claude API 전송 → 분류 결과 수신
 - 타겟 패턴 예시
   - `"혜택 포기하기"`, `"그냥 비싸게 살게요"`, `"무시하고 나가기"`
@@ -85,6 +88,7 @@ dark-scanner/
 
 ### P1-C. 시간제한 알림 (75.0%)
 
+- [ ] `src/detectors/countdown.js` 구현
 - 탐지 방식: 카운트다운 타이머 DOM 감지 + 텍스트 패턴
 - 타겟 패턴 예시
   - `"오늘만"`, `"N시간 남음"`, `"마감 임박"`

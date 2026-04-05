@@ -20,7 +20,7 @@ console.log(banner, "color: #ff4d4d; font-weight: bold; font-family: monospace;"
 // Phase 1, 2 탐지기가 완성되면 아래에서 순서대로 호출합니다.
 
 function runDetectors() {
-  // TODO P1-A: social-proof.js    — 다른 소비자의 활동 알림 (93.4%)
+  detectSocialProof(); // P1-A: 다른 소비자의 활동 알림 (93.4%)
   // TODO P1-B: emotional-language.js — 감정적 언어사용 (86.8%)
   // TODO P1-C: countdown.js       — 시간제한 알림 (75.0%)
   // TODO P2-A: preselection.js    — 특정옵션 사전선택 (48.7%)
