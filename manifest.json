@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Dark-Scanner",
+  "version": "0.1.0",
+  "description": "온라인 쇼핑몰의 오도형·압박형 다크패턴을 실시간으로 탐지하는 확장 프로그램",
+
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content.js"],
+      "css": ["src/ui/overlay.css"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "background": {
+    "service_worker": "src/background.js"
+  },
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Dark-Scanner",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["src/ui/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
