@@ -89,7 +89,9 @@ function detectSocialProof() {
   observeDynamic();
 }
 
-// content.js가 직접 import하거나 스크립트 태그로 로드 후 호출하는 방식 모두 지원
+// content.js보다 먼저 로드되어 전역 스코프에 노출됨 (manifest.json content_scripts 순서 의존)
+// Jest 테스트 환경에서는 require()로 직접 임포트
+/* global module */
 if (typeof module !== 'undefined') {
   module.exports = { detectSocialProof };
 }

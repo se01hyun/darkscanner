@@ -8,6 +8,9 @@
     "ecmaVersion": 2022,
     "sourceType": "script"
   },
+  "globals": {
+    "detectSocialProof": "readonly"
+  },
   "rules": {
     "no-unused-vars": "warn",
     "no-console": "off",
