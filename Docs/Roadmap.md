@@ -78,8 +78,8 @@ dark-scanner/
 
 ### P1-B. 감정적 언어사용 (86.8%)
 
-- [ ] `src/detectors/emotional-language.js` 구현
-- [ ] `src/api/claude.js` Claude API 클라이언트 구현
+- [x] `src/detectors/emotional-language.js` 구현
+- [x] `src/api/claude.js` Claude API 클라이언트 구현
 - 탐지 방식: 버튼·링크 텍스트 추출 → Claude API 전송 → 분류 결과 수신
 - 타겟 패턴 예시
   - `"혜택 포기하기"`, `"그냥 비싸게 살게요"`, `"무시하고 나가기"`
@@ -151,3 +151,18 @@ dark-scanner/
 | CSS 분리 | `overlay.css` 별도 파일 | JS로 style 주입 시 CSP(Content Security Policy)에 막힐 수 있음 |
 | 탐지 시점 | `document_idle` | DOM 완전 로드 후 탐지 — `document_start`보다 안정적 |
 | 배치 API 호출 | 페이지 단위 일괄 전송 | 요소별 개별 호출 시 API 비용·레이턴시 급증 방지 |
+
+---
+
+## 배포 전 필수 체크리스트
+
+Phase 4 완료 후 처리.
+
+### 언패키드 로드 (졸업 작품 시연)
+- [ ] `icons/icon16.png`, `icons/icon48.png`, `icons/icon128.png` 생성 (manifest에 명시됨)
+
+### Chrome Web Store 정식 배포
+- [ ] 개인정보처리방침 작성 및 URL 확보 (API 키·`chrome.storage` 사용으로 필수)
+- [ ] 스토어 등록용 스크린샷 (최소 1장, 1280×800 또는 640×400)
+- [ ] 스토어 설명문 (한국어) 작성
+- [ ] `manifest.json`에 `homepage_url`, `author` 필드 추가
