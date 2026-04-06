@@ -37,6 +37,8 @@ const reportedSocialProof = new WeakSet();
  */
 function emit(el) {
   if (reportedSocialProof.has(el)) return;
+  // 패턴 일치 자식이 있으면 이 요소는 컨테이너 — 자식이 직접 보고될 것이므로 스킵
+  if (Array.from(el.querySelectorAll('span, p, div, li, strong, em, b, small, label, td, th')).some(isSocialProof)) return;
   reportedSocialProof.add(el);
 
   const text = (el.innerText || el.textContent || '').trim().slice(0, 120);
