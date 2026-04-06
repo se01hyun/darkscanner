@@ -1,10 +1,7 @@
 // popup/popup.js
 'use strict';
 
-const apiKeyInput     = document.getElementById('apiKey');
-const saveBtn         = document.getElementById('saveBtn');
 const clearBtn        = document.getElementById('clearBtn');
-const statusEl        = document.getElementById('status');
 const riskScoreEl     = document.getElementById('riskScore');
 const riskTagEl       = document.getElementById('riskTag');
 const riskBarEl       = document.getElementById('riskBar');
@@ -78,24 +75,15 @@ function renderList(list) {
 }
 
 function load() {
-  chrome.storage.local.get(['claudeApiKey', 'dsDetections'], ({ claudeApiKey, dsDetections }) => {
-    if (claudeApiKey) { apiKeyInput.value = claudeApiKey; showStatus('저장된 키가 있습니다.', 'ok'); }
+  chrome.storage.local.get('dsDetections', ({ dsDetections }) => {
     const list = dsDetections || [];
     renderRisk(list);
     renderList(list);
   });
 }
 
-saveBtn.addEventListener('click', () => {
-  const key = apiKeyInput.value.trim();
-  if (!key.startsWith('sk-ant-')) { showStatus('올바른 Claude API 키를 입력하세요.', 'err'); return; }
-  chrome.storage.local.set({ claudeApiKey: key }, () => showStatus('저장 완료!', 'ok'));
-});
-
 clearBtn.addEventListener('click', () => {
   chrome.storage.local.remove('dsDetections', () => { renderRisk([]); renderList([]); });
 });
-
-function showStatus(msg, type) { statusEl.textContent = msg; statusEl.className = type; }
 
 load();

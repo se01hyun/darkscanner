@@ -85,29 +85,15 @@
 
     .empty-state { padding: 28px 14px; text-align: center; color: #444; font-size: 12px; }
 
-    /* ── API 키 설정 ── */
+    /* ── 하단 버튼 ── */
     .api-section { padding: 10px 14px 12px; border-top: 1px solid #1e1e1e; }
-    .api-section label { display: block; font-size: 11px; color: #555; margin-bottom: 5px; }
     .api-row { display: flex; gap: 6px; }
-    input[type="password"] {
-      flex: 1; padding: 6px 8px;
-      background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 5px;
-      color: #e8e8e8; font-size: 12px; outline: none;
-    }
-    input[type="password"]:focus { border-color: #ff4d4d; }
-    .btn-save {
-      padding: 6px 12px; background: #ff4d4d; color: #fff;
-      border: none; border-radius: 5px; font-size: 12px; font-weight: 600;
-      cursor: pointer; white-space: nowrap;
-    }
-    .btn-save:hover { background: #e03c3c; }
     .btn-clear {
       padding: 6px 10px; background: #1a1a1a; color: #666;
       border: 1px solid #2a2a2a; border-radius: 5px; font-size: 12px;
       cursor: pointer; white-space: nowrap;
     }
     .btn-clear:hover { color: #aaa; border-color: #444; }
-    #status { font-size: 11px; color: #444; margin-top: 5px; min-height: 16px; }
     #status.ok  { color: #2ecc71; }
     #status.err { color: #e74c3c; }
   </style>
@@ -139,13 +125,9 @@
   </div>
 
   <div class="api-section">
-    <label>Claude API 키</label>
     <div class="api-row">
-      <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" />
-      <button class="btn-save" id="saveBtn">저장</button>
-      <button class="btn-clear" id="clearBtn">초기화</button>
+      <button class="btn-clear" id="clearBtn">탐지 기록 초기화</button>
     </div>
-    <div id="status"></div>
   </div>
 
   <script src="popup.js"></script>
