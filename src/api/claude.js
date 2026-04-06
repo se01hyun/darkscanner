@@ -4,7 +4,7 @@
 'use strict';
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-haiku-4-5-20251001';
+const MODEL = 'claude-haiku-3-5-20241022';
 
 /**
  * 버튼/링크 텍스트 배열을 Claude API에 일괄 전송해 감정적 언어 여부를 분류한다.

@@ -225,6 +225,10 @@ function emit(el, trigger) {
         verdict,
         verdictLabel: VERDICT_LABEL[verdict],
         evidence,
+        confidence: verdict === 'FAKE' ? '확정' : '의심',
+        severity: '보통',
+        criterion: trigger === 'timer' ? 17 : 18,
+        module: 'DOM 모듈',
       },
     })
   );

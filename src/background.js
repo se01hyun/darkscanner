@@ -1,7 +1,4 @@
 // src/background.js
-// Chrome Extension Service Worker (Manifest V3)
-// content.js에서 Claude API 호출 요청을 받아 처리합니다. (CORS 우회)
-
 'use strict';
 
 importScripts('api/claude.js');
@@ -20,7 +17,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({ error: e.message });
       }
     });
-    return true; // 비동기 응답
+    return true;
+  }
+
+  if (message.type === 'UPDATE_BADGE') {
+    const count = message.count;
+    chrome.action.setBadgeText({ text: count > 0 ? String(count) : '' });
+    chrome.action.setBadgeBackgroundColor({ color: '#e74c3c' });
+    sendResponse({});
   }
 });
 

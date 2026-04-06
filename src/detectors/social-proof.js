@@ -28,15 +28,15 @@ function isSocialProof(el) {
  * 탐지 결과를 저장하는 Set — 같은 요소를 중복 보고하지 않는다.
  * @type {WeakSet<Element>}
  */
-const reported = new WeakSet();
+const reportedSocialProof = new WeakSet();
 
 /**
  * 요소를 탐지 결과로 emit 한다.
  * @param {Element} el
  */
 function emit(el) {
-  if (reported.has(el)) return;
-  reported.add(el);
+  if (reportedSocialProof.has(el)) return;
+  reportedSocialProof.add(el);
 
   const text = (el.innerText || el.textContent || '').trim().slice(0, 120);
   console.warn('[Dark-Scanner] 소셜 프루프 탐지:', text, el);
@@ -45,7 +45,16 @@ function emit(el) {
   el.dispatchEvent(
     new CustomEvent('darkscanner:detected', {
       bubbles: true,
-      detail: { type: 'social-proof', label: '다른 소비자의 활동 알림', el, text },
+      detail: {
+        type: 'social-proof',
+        label: '다른 소비자의 활동 알림',
+        el,
+        text,
+        confidence: '의심',
+        severity: '보통',
+        criterion: 19,
+        module: '규칙 기반',
+      },
     })
   );
 }

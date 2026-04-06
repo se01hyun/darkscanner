@@ -29,4 +29,8 @@ function runDetectors() {
 
 }
 
-runDetectors();
+// 페이지 로드마다 이전 탐지 결과 초기화 후 탐지기 실행
+chrome.storage.local.remove('dsDetections', () => {
+  chrome.runtime.sendMessage({ type: 'UPDATE_BADGE', count: 0 });
+  runDetectors();
+});

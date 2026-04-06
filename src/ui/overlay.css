@@ -1,14 +1,26 @@
-/* src/ui/overlay.css — Dark-Scanner Phase 3 경고 UI */
+/* src/ui/overlay.css — Dark-Scanner 심각도별 하이라이트 */
 
-/* ── 탐지 요소 하이라이트 ─────────────────────────────────────────────────── */
+.ds-highlight { position: relative !important; }
 
-.ds-highlight {
+/* 확정 + 높음 — 빨간 실선 */
+.ds-highlight--confirmed-high {
   outline: 2px solid #e74c3c !important;
   outline-offset: 2px !important;
 }
 
-/* ── 툴팁 ────────────────────────────────────────────────────────────────── */
+/* 확정 + 보통 — 주황 실선 */
+.ds-highlight--confirmed-medium {
+  outline: 2px solid #e67e22 !important;
+  outline-offset: 2px !important;
+}
 
+/* 의심 — 주황 점선 */
+.ds-highlight--suspected {
+  outline: 2px dashed #f39c12 !important;
+  outline-offset: 2px !important;
+}
+
+/* ── 툴팁 ── */
 .ds-tooltip {
   position: fixed;
   z-index: 2147483647;
@@ -18,7 +30,7 @@
   background: #1a1a2e;
   border: 1.5px solid #e74c3c;
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 13px;
   line-height: 1.5;
@@ -26,52 +38,10 @@
   pointer-events: none;
   word-break: break-word;
 }
-
-.ds-tooltip-title {
-  margin-bottom: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #ff6b6b;
-}
-
-.ds-tooltip-text {
-  margin-bottom: 4px;
-  font-size: 12px;
-  color: #ccc;
-}
-
-.ds-tooltip-verdict {
-  margin-top: 4px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
+.ds-tooltip-title  { margin-bottom: 6px; font-size: 13px; font-weight: 700; color: #ff6b6b; }
+.ds-tooltip-text   { margin-bottom: 4px; font-size: 12px; color: #ccc; }
+.ds-tooltip-verdict { margin-top: 4px; font-size: 12px; font-weight: 600; }
 .ds-verdict-REAL    { color: #2ecc71; }
 .ds-verdict-FAKE    { color: #e74c3c; }
 .ds-verdict-UNKNOWN { color: #f39c12; }
-
-.ds-tooltip-reason {
-  margin-top: 4px;
-  font-size: 12px;
-  color: #aaa;
-  font-style: italic;
-}
-
-/* ── 탐지 건수 배지 ──────────────────────────────────────────────────────── */
-
-.ds-badge {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 2147483646;
-  padding: 7px 14px;
-  background: #e74c3c;
-  border-radius: 20px;
-  box-shadow: 0 2px 10px rgba(231, 76, 60, 0.5);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1;
-  user-select: none;
-}
+.ds-tooltip-reason  { margin-top: 4px; font-size: 12px; color: #aaa; font-style: italic; }

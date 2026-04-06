@@ -95,6 +95,10 @@ async function detectEmotionalLanguage() {
             el: item.el,
             text: item.text,
             reason,
+            confidence: '확정',
+            severity: '높음',
+            criterion: 16,
+            module: 'NLP 모듈',
           },
         })
       );
