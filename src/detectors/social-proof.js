@@ -2,6 +2,7 @@
 // P1-A: 다른 소비자의 활동 알림 탐지 (실태조사 빈도 93.4%)
 // 탐지 방식: 정규식 텍스트 매칭 + MutationObserver (동적 삽입 요소 포함)
 
+(function () {
 'use strict';
 
 // '분'은 제외: 시간 단위(39분 내 주문)와 구별 불가능하여 오탐 발생
@@ -106,9 +107,14 @@ function detectSocialProof() {
   observeDynamic();
 }
 
-// content.js보다 먼저 로드되어 전역 스코프에 노출됨 (manifest.json content_scripts 순서 의존)
+// 전역 스코프에 노출 — content.js에서 호출하기 위함
+/* global globalThis */
+globalThis.detectSocialProof = detectSocialProof;
+
 // Jest 테스트 환경에서는 require()로 직접 임포트
 /* global module */
 if (typeof module !== 'undefined') {
   module.exports = { detectSocialProof };
 }
+
+})();

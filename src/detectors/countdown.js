@@ -2,6 +2,7 @@
 // P1-C: 시간제한 알림 탐지 (실태조사 빈도 75.0%)
 // 탐지 방식: 텍스트 패턴 매칭 + 타이머 포맷 감지 + 데이터 소스 진위 판별
 
+(function () {
 'use strict';
 
 // ─── 패턴 상수 ────────────────────────────────────────────────────────────────
@@ -332,6 +333,11 @@ function detectCountdown() {
   observeDynamic();
 }
 
+// 전역 스코프에 노출 — content.js에서 호출하기 위함
+/* global globalThis */
+globalThis.detectCountdown = detectCountdown;
+
+// Jest 테스트 환경에서는 require()로 직접 임포트
 /* global module */
 if (typeof module !== 'undefined') {
   module.exports = {
@@ -341,3 +347,5 @@ if (typeof module !== 'undefined') {
     findStorageTimer,    // 단위 테스트용
   };
 }
+
+})();

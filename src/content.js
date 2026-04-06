@@ -22,7 +22,7 @@ console.log(banner, "color: #ff4d4d; font-weight: bold; font-family: monospace;"
 function runDetectors() {
   detectSocialProof();        // P1-A: 다른 소비자의 활동 알림 (93.4%)
   detectEmotionalLanguage();  // P1-B: 감정적 언어사용 (86.8%) — 비동기
-  detectCountdown();             // P1-C: 시간제한 알림 (75.0%)
+  detectCountdown();          // P1-C: 시간제한 알림 (75.0%)
   // TODO P2-A: preselection.js    — 특정옵션 사전선택 (48.7%)
   // TODO P2-B: false-discount.js  — 거짓 할인 (19.7%)
   // TODO P2-C: false-hierarchy.js — 잘못된 계층구조 (15.8%)
