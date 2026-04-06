@@ -199,6 +199,11 @@ const VERDICT_STYLE = {
  */
 function emit(el, trigger) {
   if (reported.has(el)) return;
+  let ancestor = el.parentElement;
+  while (ancestor) {
+    if (reported.has(ancestor)) return;
+    ancestor = ancestor.parentElement;
+  }
   reported.add(el);
 
   const text = (el.innerText || el.textContent || '').trim().slice(0, 120);
