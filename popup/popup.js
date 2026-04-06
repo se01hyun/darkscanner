@@ -7,7 +7,8 @@ const riskTagEl       = document.getElementById('riskTag');
 const riskBarEl       = document.getElementById('riskBar');
 const riskSummaryEl   = document.getElementById('riskSummary');
 const detectionListEl = document.getElementById('detectionList');
-const listTitleEl     = document.getElementById('listTitle');
+const sectionHeaderEl = document.getElementById('sectionHeader');
+const sectionCountEl  = document.getElementById('sectionCount');
 
 const SEVERITY_WEIGHT = { '높음': 40, '보통': 20, '낮음': 10 };
 
@@ -50,18 +51,19 @@ function renderRisk(list) {
 
 function renderList(list) {
   if (!list.length) {
-    listTitleEl.style.display = 'none';
-    detectionListEl.innerHTML = '<div class="empty-state">현재 페이지에서 탐지된 항목이 없습니다.</div>';
+    sectionHeaderEl.style.display = 'none';
+    detectionListEl.innerHTML = '<div class="empty-state"><span class="empty-icon">🛡️</span>현재 페이지에서 탐지된 항목이 없습니다.</div>';
     return;
   }
-  listTitleEl.style.display = 'block';
-  listTitleEl.textContent = `탐지 항목 ${list.length}건`;
+  sectionHeaderEl.style.display = 'flex';
+  sectionCountEl.textContent = `${list.length}건`;
 
   const sevCls = { '높음': 'high', '보통': 'medium', '낮음': 'low' };
+  const sevCard = { '높음': 'sev-high', '보통': 'sev-medium', '낮음': 'sev-low' };
   detectionListEl.innerHTML = list.map(d => {
     const excerpt = d.text ? (d.text.length > 50 ? d.text.slice(0, 50) + '…' : d.text) : '';
     return `
-      <div class="detection-item">
+      <div class="detection-item ${sevCard[d.severity] || 'sev-medium'}">
         <div class="detection-top">
           <span class="detection-label">${d.label}</span>
           <span class="tag tag--${d.confidence === '확정' ? 'confirmed' : 'suspected'}">${d.confidence}</span>

@@ -3,131 +3,332 @@
 <head>
   <meta charset="UTF-8" />
   <title>Dark-Scanner</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net/npm/pretendard@latest/dist/web/static/" crossorigin />
   <style>
+    @import url('https://cdn.jsdelivr.net/npm/pretendard@latest/dist/web/static/pretendard.css');
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #121212;
+      --surface:      #1c1c1e;
+      --surface-2:    #232325;
+      --border:       rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.13);
+      --text-primary: #f0f0f0;
+      --text-secondary: #8e8e93;
+      --text-muted:   #48484a;
+      --accent-red:   #ff453a;
+      --accent-orange:#ff9f0a;
+      --accent-yellow:#ffd60a;
+      --accent-green: #32d74b;
+      --glass-bg:     rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.08);
+      --radius-sm:    8px;
+      --radius-md:    12px;
+      --radius-lg:    16px;
+    }
+
     body {
-      width: 340px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      width: 360px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+                   'Helvetica Neue', sans-serif;
       font-size: 13px;
-      background: #0f0f0f;
-      color: #e8e8e8;
+      background: var(--bg);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
     }
 
     /* ── 헤더 ── */
     .header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px 10px;
-      border-bottom: 1px solid #1e1e1e;
+      gap: 10px;
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid var(--border);
     }
-    .header h1 { font-size: 15px; color: #ff4d4d; }
-    .header .subtitle { font-size: 10px; color: #555; margin-top: 1px; }
 
-    /* ── 위험도 바 ── */
-    .risk-section { padding: 12px 14px 10px; border-bottom: 1px solid #1e1e1e; }
-    .risk-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 6px; }
-    .risk-label { font-size: 11px; color: #777; }
-    .risk-score { font-size: 28px; font-weight: 800; color: #e8e8e8; line-height: 1; }
-    .risk-max   { font-size: 13px; color: #555; }
+    .header-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #ff453a 0%, #ff6b35 100%);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 12px rgba(255,69,58,0.35);
+    }
+
+    .header-text h1 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+    .header-text .subtitle {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 1px;
+      letter-spacing: 0;
+    }
+
+    /* ── 위험도 섹션 ── */
+    .risk-section {
+      padding: 16px 16px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .risk-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .risk-score-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+      flex: 1;
+    }
+
+    .risk-score {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+      letter-spacing: -1px;
+      font-variant-numeric: tabular-nums;
+    }
+    .risk-max {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
     .risk-tag {
-      margin-left: auto;
-      font-size: 11px; font-weight: 700;
-      padding: 2px 8px; border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
     }
-    .risk-tag--danger  { background: #e74c3c; color: #fff; }
-    .risk-tag--warning { background: #e67e22; color: #fff; }
-    .risk-tag--caution { background: #f39c12; color: #fff; }
-    .risk-tag--safe    { background: #2ecc71; color: #fff; }
+    .risk-tag--danger  { background: rgba(255,69,58,0.18);  color: #ff6b61; border: 1px solid rgba(255,69,58,0.3); }
+    .risk-tag--warning { background: rgba(255,159,10,0.15); color: #ffb340; border: 1px solid rgba(255,159,10,0.3); }
+    .risk-tag--caution { background: rgba(255,214,10,0.12); color: #ffd60a; border: 1px solid rgba(255,214,10,0.25); }
+    .risk-tag--safe    { background: rgba(50,215,75,0.12);  color: #4cd964; border: 1px solid rgba(50,215,75,0.25); }
+
     .risk-bar-bg {
-      height: 4px; background: #222; border-radius: 2px;
-      overflow: hidden; margin-bottom: 8px;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 10px;
     }
-    .risk-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
-    .risk-summary { font-size: 11px; color: #666; }
-    .risk-summary span { color: #aaa; }
+    .risk-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    }
+
+    .risk-summary {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .risk-summary span { color: var(--text-primary); font-weight: 600; }
 
     /* ── 탐지 목록 ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px 8px;
+      gap: 6px;
+    }
     .section-title {
-      padding: 10px 14px 6px;
-      font-size: 11px; font-weight: 700; color: #666;
-      text-transform: uppercase; letter-spacing: 0.05em;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      flex: 1;
     }
-    .detection-list { max-height: 320px; overflow-y: auto; }
-    .detection-list::-webkit-scrollbar { width: 4px; }
-    .detection-list::-webkit-scrollbar-track { background: #111; }
-    .detection-list::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+    .section-count {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--surface-2);
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
 
-    .detection-item {
-      padding: 10px 14px;
-      border-bottom: 1px solid #1a1a1a;
+    .detection-list {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 0 10px 6px;
     }
-    .detection-item:last-child { border-bottom: none; }
+    .detection-list::-webkit-scrollbar { width: 3px; }
+    .detection-list::-webkit-scrollbar-track { background: transparent; }
+    .detection-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    /* 카드 (글래스모피즘) */
+    .detection-item {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 7px;
+      transition: background 0.15s, border-color 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .detection-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      border-radius: 3px 0 0 3px;
+    }
+    .detection-item.sev-high::before  { background: var(--accent-red); }
+    .detection-item.sev-medium::before { background: var(--accent-orange); }
+    .detection-item.sev-low::before   { background: #636366; }
+    .detection-item:last-child { margin-bottom: 0; }
 
     .detection-top {
-      display: flex; align-items: center; gap: 6px; margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 6px;
     }
-    .detection-label { font-size: 13px; font-weight: 700; color: #e8e8e8; flex: 1; }
+    .detection-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      flex: 1;
+      letter-spacing: -0.2px;
+    }
 
     .tag {
-      font-size: 10px; font-weight: 700;
-      padding: 1px 6px; border-radius: 3px; white-space: nowrap;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+      letter-spacing: 0.01em;
     }
-    .tag--confirmed { background: #3a1a1a; color: #ff6b6b; border: 1px solid #e74c3c; }
-    .tag--suspected { background: #2a1e0a; color: #f5a623; border: 1px solid #f39c12; }
-    .tag--high   { background: #3a1a1a; color: #ff6b6b; }
-    .tag--medium { background: #2a1a0a; color: #e67e22; }
-    .tag--low    { background: #1a2a1a; color: #2ecc71; }
+    .tag--confirmed { background: rgba(255,69,58,0.15);  color: #ff6b61; border: 1px solid rgba(255,69,58,0.25); }
+    .tag--suspected { background: rgba(255,159,10,0.12); color: #ffb340; border: 1px solid rgba(255,159,10,0.22); }
+    .tag--high   { background: rgba(255,69,58,0.12);  color: #ff6b61; }
+    .tag--medium { background: rgba(255,159,10,0.10); color: #ffb340; }
+    .tag--low    { background: rgba(99,99,102,0.2);   color: #8e8e93; }
 
-    .detection-text   { font-size: 11px; color: #888; margin-bottom: 4px; line-height: 1.4; word-break: break-all; }
-    .detection-reason { font-size: 11px; color: #555; margin-bottom: 4px; font-style: italic; }
-    .detection-module { font-size: 10px; color: #444; }
+    .detection-text {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+      line-height: 1.5;
+      word-break: break-all;
+    }
+    .detection-reason {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-style: italic;
+      line-height: 1.4;
+    }
+    .detection-module {
+      font-size: 10px;
+      color: #3a3a3c;
+      margin-top: 2px;
+    }
 
-    .empty-state { padding: 28px 14px; text-align: center; color: #444; font-size: 12px; }
+    .empty-state {
+      padding: 36px 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .empty-icon {
+      font-size: 28px;
+      display: block;
+      margin-bottom: 8px;
+      opacity: 0.4;
+    }
 
     /* ── 하단 버튼 ── */
-    .api-section { padding: 10px 14px 12px; border-top: 1px solid #1e1e1e; }
-    .api-row { display: flex; gap: 6px; }
-    .btn-clear {
-      padding: 6px 10px; background: #1a1a1a; color: #666;
-      border: 1px solid #2a2a2a; border-radius: 5px; font-size: 12px;
-      cursor: pointer; white-space: nowrap;
+    .footer {
+      padding: 10px 16px 14px;
+      border-top: 1px solid var(--border);
     }
-    .btn-clear:hover { color: #aaa; border-color: #444; }
-    #status.ok  { color: #2ecc71; }
-    #status.err { color: #e74c3c; }
+    .btn-clear {
+      width: 100%;
+      padding: 9px 16px;
+      background: var(--surface-2);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      letter-spacing: -0.1px;
+    }
+    .btn-clear:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+    }
+    .btn-clear:active {
+      background: rgba(255,255,255,0.04);
+    }
+
+    #status.ok  { color: var(--accent-green); }
+    #status.err { color: var(--accent-red); }
   </style>
 </head>
 <body>
+
+  <!-- 헤더 -->
   <div class="header">
-    <div>
+    <div class="header-icon">🔍</div>
+    <div class="header-text">
       <h1>Dark-Scanner</h1>
       <div class="subtitle">온라인 쇼핑몰 다크패턴 탐지</div>
     </div>
   </div>
 
+  <!-- 위험도 -->
   <div class="risk-section">
     <div class="risk-row">
-      <span class="risk-label">위험도</span>
-      <span class="risk-score" id="riskScore">0</span>
-      <span class="risk-max">/ 100</span>
+      <div class="risk-score-wrap">
+        <span class="risk-score" id="riskScore">0</span>
+        <span class="risk-max">/ 100</span>
+      </div>
       <span class="risk-tag risk-tag--safe" id="riskTag">안전</span>
     </div>
     <div class="risk-bar-bg">
-      <div class="risk-bar-fill" id="riskBar" style="width:0%;background:#2ecc71;"></div>
+      <div class="risk-bar-fill" id="riskBar" style="width:0%; background:var(--accent-green);"></div>
     </div>
     <div class="risk-summary" id="riskSummary">탐지된 패턴 없음</div>
   </div>
 
-  <div class="section-title" id="listTitle" style="display:none"></div>
+  <!-- 탐지 목록 -->
+  <div class="section-header" id="sectionHeader" style="display:none">
+    <span class="section-title">탐지 항목</span>
+    <span class="section-count" id="sectionCount">0</span>
+  </div>
   <div class="detection-list" id="detectionList">
-    <div class="empty-state">현재 페이지에서 탐지된 항목이 없습니다.</div>
+    <div class="empty-state">
+      <span class="empty-icon">🛡️</span>
+      현재 페이지에서 탐지된 항목이 없습니다.
+    </div>
   </div>
 
-  <div class="api-section">
-    <div class="api-row">
-      <button class="btn-clear" id="clearBtn">탐지 기록 초기화</button>
-    </div>
+  <!-- 하단 -->
+  <div class="footer">
+    <button class="btn-clear" id="clearBtn">탐지 기록 초기화</button>
+    <div id="status"></div>
   </div>
 
   <script src="popup.js"></script>
