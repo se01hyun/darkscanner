@@ -19,6 +19,7 @@
       "js": [
         "src/detectors/social-proof.js",
         "src/detectors/emotional-language.js",
+        "src/detectors/countdown.js",
         "src/content.js"
       ],
       "css": ["src/ui/overlay.css"],

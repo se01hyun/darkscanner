@@ -88,7 +88,7 @@ dark-scanner/
 
 ### P1-C. 시간제한 알림 (75.0%)
 
-- [ ] `src/detectors/countdown.js` 구현
+- [x] `src/detectors/countdown.js` 구현
 - 탐지 방식: 카운트다운 타이머 DOM 감지 + 텍스트 패턴
 - 타겟 패턴 예시
   - `"오늘만"`, `"N시간 남음"`, `"마감 임박"`
