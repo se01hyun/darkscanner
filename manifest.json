@@ -17,6 +17,8 @@
     {
       "matches": ["<all_urls>"],
       "js": [
+        "src/ui/tooltip.js",
+        "src/ui/overlay.js",
         "src/detectors/social-proof.js",
         "src/detectors/emotional-language.js",
         "src/detectors/countdown.js",
