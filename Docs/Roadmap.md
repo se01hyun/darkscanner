@@ -14,7 +14,7 @@ PRD 스코프 기준 **오도형 + 압박형** 한정. `숨겨진 정보`는 가
 |---|---|---|---|---|
 | 1 | 다른 소비자의 활동 알림 | 압박형 | **93.4%** | Rule-based |
 | 2 | 감정적 언어사용 | 압박형 | **86.8%** | Claude API (NLP) |
-| 3 | 시간제한 알림 | 압박형 | 75.0% | Rule-based + DOM |
+| 3 | 시간제한 알림 | 압박형 | 75.0% | Rule-based + DOM + 데이터 소스 진위 판별 |
 | 4 | 특정옵션 사전선택 | 오도형 | 48.7% | DOM 상태 분석 |
 | 5 | 거짓 할인 | 오도형 | 19.7% | 가격 역산 로직 |
 | 6 | 잘못된 계층구조 | 오도형 | 15.8% | 색상 대비 분석 |
@@ -89,11 +89,15 @@ dark-scanner/
 ### P1-C. 시간제한 알림 (75.0%)
 
 - [x] `src/detectors/countdown.js` 구현
-- 탐지 방식: 카운트다운 타이머 DOM 감지 + 텍스트 패턴
+- 탐지 방식: 텍스트 패턴 매칭 + 타이머 포맷(`00:00`) 변화 감지 + **데이터 소스 진위 판별**
 - 타겟 패턴 예시
-  - `"오늘만"`, `"N시간 남음"`, `"마감 임박"`
+  - `"오늘만"`, `"N시간 남음"`, `"마감 임박"`, `"타임세일"`, `"flash sale"`
   - `setInterval` 기반으로 숫자가 변화하는 DOM 요소
-- MutationObserver로 숫자 변화 감지
+- MutationObserver로 `characterData` · `childList` 변화 감지
+- **진위 판별 3단계**
+  - `REAL` — DOM의 `data-end-time` 등 속성에 ISO 8601 / Unix timestamp 존재
+  - `FAKE` — DOM엔 없고 `localStorage` / `sessionStorage`에만 타이머 값 존재 (세션 추적 의심)
+  - `UNKNOWN` — 근거 없음 (JS 런타임 전용으로 추정)
 - **구현 난이도: 낮음~중간**
 
 ---
@@ -102,18 +106,21 @@ dark-scanner/
 
 ### P2-A. 특정옵션 사전선택 (48.7%)
 
+- [ ] `src/detectors/preselection.js` 구현
 - `input[type=checkbox]:checked`, `input[type=radio]:checked` 초기 상태 스캔
 - Claude API로 해당 옵션 텍스트의 "사업자 유리 여부" 분류 보조
 - 타겟: 유료 구독, 보험, 추가 서비스가 기본 선택된 상태
 
 ### P2-B. 거짓 할인 (19.7%)
 
+- [ ] `src/detectors/false-discount.js` 구현
 - 정가·할인가 DOM 추출 후 할인율 역산 검증
 - `1+1` 상품의 단품 가격 비교 로직
 - 원가 대비 과도한 할인율 표기 감지
 
 ### P2-C. 잘못된 계층구조 (15.8%)
 
+- [ ] `src/detectors/false-hierarchy.js` 구현
 - `getComputedStyle`로 같은 화면 내 버튼들의 색상 대비(Contrast Ratio) 계산
 - CTA 버튼 대비 취소·거부 버튼의 크기·색상 차이 임계값 초과 시 탐지
 - WCAG 기준 대비 역방향 적용 (의도적으로 낮춘 대비를 감지)

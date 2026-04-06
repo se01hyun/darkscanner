@@ -43,7 +43,7 @@
 
 ## 4. 기술 스택 (Proposed)
 * **Browser**: Chrome Extension Manifest V3
-* **Language**: JavaScript / TypeScript
+* **Language**: JavaScript
 * **Analysis**: Claude API (패턴 분류 및 분석 로직)
 * [cite_start]**Reference**: 공정거래위원회 '온라인 다크패턴 자율관리 가이드라인'[cite: 169].
 
