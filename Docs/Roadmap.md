@@ -13,7 +13,7 @@ PRD 스코프 기준 **오도형 + 압박형** 한정. `숨겨진 정보`는 가
 | 순위 | 패턴 유형 | 범주 | 실태조사 빈도 | 탐지 방식 |
 |---|---|---|---|---|
 | 1 | 다른 소비자의 활동 알림 | 압박형 | **93.4%** | Rule-based |
-| 2 | 감정적 언어사용 | 압박형 | **86.8%** | Claude API (NLP) |
+| 2 | 감정적 언어사용 | 압박형 | **86.8%** | Rule-based (정규식 패턴 매칭) |
 | 3 | 시간제한 알림 | 압박형 | 75.0% | Rule-based + DOM + 데이터 소스 진위 판별 |
 | 4 | 특정옵션 사전선택 | 오도형 | 48.7% | DOM 상태 분석 |
 | 5 | 거짓 할인 | 오도형 | 19.7% | 가격 역산 로직 |
@@ -28,16 +28,14 @@ dark-scanner/
 ├── manifest.json
 ├── src/
 │   ├── content.js                  # 탐지기 실행 진입점
-│   ├── background.js               # Claude API 호출 (CORS 우회)
+│   ├── background.js               # 배지 업데이트 메시지 처리
 │   ├── detectors/
 │   │   ├── social-proof.js         # 다른 소비자의 활동 알림
-│   │   ├── emotional-language.js   # 감정적 언어사용
+│   │   ├── emotional-language.js   # 감정적 언어사용 (규칙 기반)
 │   │   ├── countdown.js            # 시간제한 알림
 │   │   ├── preselection.js         # 특정옵션 사전선택
 │   │   ├── false-discount.js       # 거짓 할인
 │   │   └── false-hierarchy.js      # 잘못된 계층구조
-│   ├── api/
-│   │   └── claude.js               # Claude API 클라이언트
 │   └── ui/
 │       ├── overlay.js              # 하이라이트 오버레이 주입
 │       ├── tooltip.js              # 경고 툴팁
@@ -79,12 +77,11 @@ dark-scanner/
 ### P1-B. 감정적 언어사용 (86.8%)
 
 - [x] `src/detectors/emotional-language.js` 구현
-- [x] `src/api/claude.js` Claude API 클라이언트 구현
-- 탐지 방식: 버튼·링크 텍스트 추출 → Claude API 전송 → 분류 결과 수신
+- 탐지 방식: 버튼·링크 텍스트 추출 → 규칙 기반 정규식 패턴 매칭 (외부 API 없음)
 - 타겟 패턴 예시
   - `"혜택 포기하기"`, `"그냥 비싸게 살게요"`, `"무시하고 나가기"`
-- API 호출 최적화: 페이지 로드 시 배치 전송 (요소별 개별 호출 금지)
-- **구현 난이도: 중간** → Claude API 연동 첫 사례
+- 4개 카테고리 33개 규칙: 포기 프레이밍 / 자기비하 / 무시 프레이밍 / 손실 인정
+- **구현 난이도: 낮음** → 오프라인 동작, API 키 불필요
 
 ### P1-C. 시간제한 알림 (75.0%)
 
@@ -144,7 +141,7 @@ dark-scanner/
 
 - [ ] 동일 화면에서 복수 패턴 동시 탐지 시 경고 강도 상향
 - [ ] 탐지 정확도 테스트 (쿠팡, 네이버쇼핑, G마켓 실사용 검증)
-- [ ] False Positive 감소 — Claude API 프롬프트 튜닝
+- [ ] False Positive 감소 — 규칙 패턴 보완
 - [ ] 발표용 데모 시나리오 준비
 
 ---
@@ -154,10 +151,9 @@ dark-scanner/
 | 결정 | 내용 | 이유 |
 |---|---|---|
 | Manifest V3 | MV3 사용 | MV2는 2024년 이후 크롬에서 비활성화 |
-| API 호출 위치 | background service worker | content script에서 외부 API 직접 호출 시 CORS 차단 |
 | CSS 분리 | `overlay.css` 별도 파일 | JS로 style 주입 시 CSP(Content Security Policy)에 막힐 수 있음 |
 | 탐지 시점 | `document_idle` | DOM 완전 로드 후 탐지 — `document_start`보다 안정적 |
-| 배치 API 호출 | 페이지 단위 일괄 전송 | 요소별 개별 호출 시 API 비용·레이턴시 급증 방지 |
+| 감정적 언어 탐지 | 규칙 기반 정규식 | 외부 API(Claude/Gemini) 쿼터 문제로 오프라인 전환 |
 
 ---
 
