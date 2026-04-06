@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dark-Scanner 탐지 테스트 페이지</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #f5f5f5; }
+    h1 { font-size: 20px; margin-bottom: 4px; }
+    .desc { color: #666; font-size: 13px; margin-bottom: 32px; }
+    section { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    h2 { font-size: 15px; margin: 0 0 4px; }
+    .badge-detect { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #fff0f0; color: #c0392b; border: 1px solid #e74c3c; margin-bottom: 12px; }
+    .badge-ok    { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #f0fff4; color: #27ae60; border: 1px solid #2ecc71; margin-bottom: 12px; }
+    ul { margin: 0; padding: 0 0 0 18px; }
+    li { margin: 6px 0; font-size: 14px; }
+    hr { border: none; border-top: 1px solid #eee; margin: 12px 0; }
+    .note { font-size: 12px; color: #999; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<h1>Dark-Scanner 탐지 테스트 페이지</h1>
+<p class="desc">
+  크롬에서 Dark-Scanner 확장 프로그램을 활성화한 뒤 이 페이지를 열면<br>
+  아래 항목에 빨간 테두리 여부로 탐지 정확도를 확인할 수 있습니다.
+</p>
+
+<!-- ───────────────────────────────────────────────
+  P1-A: 다른 소비자의 활동 알림
+──────────────────────────────────────────────── -->
+<section>
+  <h2>P1-A: 다른 소비자의 활동 알림</h2>
+  <span class="badge-detect">탐지되어야 함</span>
+  <ul>
+    <li><span>153명이 보는 중</span></li>
+    <li><span>최근 24명이 구매했습니다</span></li>
+    <li><span>지금까지 3,200개 구매</span></li>
+    <li><span>47명이 장바구니에 담았습니다</span></li>
+    <li><span>재고 3개 남음</span></li>
+    <li><span>오늘 82건 주문</span></li>
+    <li><span>한정 10석</span></li>
+    <li><span>품절 임박</span></li>
+    <li><span>지금 막 구매</span></li>
+  </ul>
+
+  <hr />
+  <span class="badge-ok">탐지되면 안 됨 (오탐 검증)</span>
+  <ul>
+    <li><span>내일(화) 4/7 도착 보장 (7시간 39분 내 주문 시 / 서울·경기 기준)</span></li>
+    <li><span>배송비 무료</span></li>
+    <li><span>카드 할인 적용 가능</span></li>
+    <li><span>상품 설명을 확인하세요</span></li>
+    <li><span>11 개 상품평</span></li>
+    <li><span>로그인 후 이용해주세요</span></li>
+  </ul>
+  <p class="note">* "39분 내 주문"이 탐지되면 social-proof.js SOCIAL_PROOF_PATTERN 정규식 오탐</p>
+</section>
+
+<!-- ───────────────────────────────────────────────
+  P1-B: 감정적 언어사용
+──────────────────────────────────────────────── -->
+<section>
+  <h2>P1-B: 감정적 언어사용</h2>
+  <span class="badge-detect">탐지되어야 함 (API 키 필요)</span>
+  <ul>
+    <li><button>혜택 포기하기</button></li>
+    <li><button>그냥 비싸게 살게요</button></li>
+    <li><button>무시하고 나가기</button></li>
+    <li><button>괜찮아요, 정가로 살게요</button></li>
+    <li><button>할인 받기 싫어요</button></li>
+  </ul>
+
+  <hr />
+  <span class="badge-ok">탐지되면 안 됨</span>
+  <ul>
+    <li><button>확인</button></li>
+    <li><button>장바구니 담기</button></li>
+    <li><button>바로구매</button></li>
+    <li><button>닫기</button></li>
+  </ul>
+</section>
+
+<!-- ───────────────────────────────────────────────
+  P1-C: 시간제한 알림
+──────────────────────────────────────────────── -->
+<section>
+  <h2>P1-C: 시간제한 알림</h2>
+  <span class="badge-detect">탐지되어야 함</span>
+  <ul>
+    <li><span>오늘만 할인</span></li>
+    <li><span>마감 임박</span></li>
+    <li><span>이 가격 마지막</span></li>
+    <li><span>3시간 남음</span></li>
+    <li><span>20분 이내</span></li>
+    <li><span>D-2</span></li>
+    <li><span>3일 후 종료</span></li>
+    <li><span>오늘 오후 6시 마감</span></li>
+    <li><span>타임세일</span></li>
+    <li><span>flash sale</span></li>
+    <li>
+      <!-- 실제로 줄어드는 타이머 (FAKE — localStorage 근거 없음 → UNKNOWN) -->
+      타이머: <span id="fake-timer">02:59</span>
+    </li>
+  </ul>
+
+  <hr />
+  <span class="badge-ok">탐지되면 안 됨</span>
+  <ul>
+    <li><span>내일 도착 보장</span></li>
+    <li><span>평일 오후 2시 이전 주문 당일 출고</span></li>
+    <li><span>무료배송</span></li>
+  </ul>
+</section>
+
+<script>
+  // fake-timer: 실제로 줄어드는 타이머 (P1-C 동적 감지 테스트용)
+  (function () {
+    const el = document.getElementById('fake-timer');
+    let secs = 179;
+    setInterval(() => {
+      secs = Math.max(0, secs - 1);
+      const m = String(Math.floor(secs / 60)).padStart(2, '0');
+      const s = String(secs % 60).padStart(2, '0');
+      el.textContent = `${m}:${s}`;
+    }, 1000);
+  })();
+</script>
+
+</body>
+</html>
