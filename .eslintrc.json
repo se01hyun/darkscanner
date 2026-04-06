@@ -12,6 +12,7 @@
     "detectSocialProof": "readonly",
     "detectEmotionalLanguage": "readonly",
     "classifyEmotionalLanguage": "readonly",
+    "detectCountdown": "readonly",
     "importScripts": "readonly"
   },
   "rules": {
