@@ -16,6 +16,7 @@
     li { margin: 6px 0; font-size: 14px; }
     hr { border: none; border-top: 1px solid #eee; margin: 12px 0; }
     .note { font-size: 12px; color: #999; margin-top: 8px; }
+    .cat { font-size: 11px; color: #aaa; margin: 8px 0 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
   </style>
 </head>
 <body>
@@ -53,8 +54,12 @@
     <li><span>상품 설명을 확인하세요</span></li>
     <li><span>11 개 상품평</span></li>
     <li><span>로그인 후 이용해주세요</span></li>
+    <li><span>지금 보고 계신 화면은 결제 완료 페이지입니다</span></li>
   </ul>
-  <p class="note">* "39분 내 주문"이 탐지되면 social-proof.js SOCIAL_PROOF_PATTERN 정규식 오탐</p>
+  <p class="note">
+    * "39분 내 주문"이 탐지되면 SOCIAL_PROOF_PATTERN 오탐<br>
+    * "지금 보고 계신 화면은..."이 탐지되면 <code>지금 보고</code> 단독 패턴 오탐 — 숫자 없는 일반 문장이므로 탐지 불가여야 함
+  </p>
 </section>
 
 <!-- ───────────────────────────────────────────────
@@ -62,13 +67,37 @@
 ──────────────────────────────────────────────── -->
 <section>
   <h2>P1-B: 감정적 언어사용</h2>
-  <span class="badge-detect">탐지되어야 함 (API 키 필요)</span>
+  <span class="badge-detect">탐지되어야 함 (규칙 기반 — API 키 불필요)</span>
+
+  <p class="cat">카테고리 1 — 혜택·기회 포기 프레이밍</p>
   <ul>
     <li><button>혜택 포기하기</button></li>
+    <li><button>쿠폰 없이 계속하기</button></li>
+    <li><button>이 혜택 안 받겠습니다</button></li>
+    <li><button>기회를 놓치겠습니다</button></li>
+  </ul>
+
+  <p class="cat">카테고리 2 — 자기비하적 거절</p>
+  <ul>
     <li><button>그냥 비싸게 살게요</button></li>
-    <li><button>무시하고 나가기</button></li>
     <li><button>괜찮아요, 정가로 살게요</button></li>
-    <li><button>할인 받기 싫어요</button></li>
+    <li><button>손해 봐도 괜찮아요</button></li>
+    <li><button>혜택 없이 계속</button></li>
+  </ul>
+
+  <p class="cat">카테고리 3 — 무시·경시 프레이밍</p>
+  <ul>
+    <li><button>무시하고 나가기</button></li>
+    <li><button>그냥 닫기</button></li>
+    <li><button>신경 안 쓸게요</button></li>
+  </ul>
+
+  <p class="cat">카테고리 4 — 직접적 손실 인정</p>
+  <ul>
+    <li><button>안 받겠습니다</button></li>
+    <li><button>전 괜찮아요</button></li>
+    <li><button>나중에 할게요</button></li>
+    <li><button>다음에 기회에</button></li>
   </ul>
 
   <hr />
@@ -78,7 +107,9 @@
     <li><button>장바구니 담기</button></li>
     <li><button>바로구매</button></li>
     <li><button>닫기</button></li>
+    <li><button>할인 받기 싫어요</button></li>
   </ul>
+  <p class="note">* "할인 받기 싫어요"는 규칙 33개 중 매칭되는 패턴 없음 — 탐지되면 오탐</p>
 </section>
 
 <!-- ───────────────────────────────────────────────
@@ -110,7 +141,14 @@
     <li><span>내일 도착 보장</span></li>
     <li><span>평일 오후 2시 이전 주문 당일 출고</span></li>
     <li><span>무료배송</span></li>
+    <!-- 조사 결합 케이스: "남음이", "남았습니다" 등은 서술어이므로 탐지 불가여야 함 -->
+    <li><span>평균 응답 시간은 약 3시간 남음이 있습니다</span></li>
+    <li><span>재고가 3개 남았습니다만 추가 입고 예정입니다</span></li>
   </ul>
+  <p class="note">
+    * "남음이", "남았습니다" 처럼 조사·어미가 붙으면 서술어이므로 탐지되면 안 됨<br>
+    (조사 없이 끝나는 카운트다운 표현만 탐지 대상)
+  </p>
 </section>
 
 <script>
